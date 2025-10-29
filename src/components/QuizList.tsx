@@ -1,13 +1,6 @@
 // src/components/quizzes/QuizList.tsx
+import type { Quiz } from "../types/common";
 import QuizCard from "./QuizCard";
-
-interface Quiz {
-  id: number;
-  title: string;
-  scheduled_time: string;
-  num_questions: number;
-  duration_minutes: number;
-}
 
 interface QuizListProps {
   quizzes: Quiz[];
@@ -26,11 +19,13 @@ const QuizList = ({ quizzes, loading, error }: QuizListProps) => {
     );
 
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-      {quizzes.map((quiz) => (
-        <QuizCard key={quiz.id} {...quiz} />
-      ))}
-    </div>
+    <>
+      <div className="flex flex-col gap-4 w-full">
+        {quizzes.map((quiz) => (
+          <QuizCard key={quiz.id} {...quiz} />
+        ))}
+      </div>
+    </>
   );
 };
 

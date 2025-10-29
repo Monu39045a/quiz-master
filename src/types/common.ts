@@ -22,15 +22,14 @@ export interface Question {
 }
 
 export interface Quiz {
-  quidId: string;
-  trainerId: string;
+  id: number;
   title: string;
-  status: "scheduled" | "started" | "completed";
-  startTime: string | null;
-  duration: number;
-  questions?: Question[];
+  start_time: string;
+  end_time: string;
+  num_questions: number;
+  duration_minutes: number;
+  status: string;
 }
-
 /// Login
 export interface LoginResponse {
   user: User;

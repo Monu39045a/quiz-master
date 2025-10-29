@@ -4,16 +4,17 @@ import type { RootState } from "../redux/store";
 import CreateQuizModal from "../components/CreateQuizModal";
 import QuizCard from "../components/QuizCard";
 import Navbar from "../components/Navbar";
-import { BASE_URL } from "../types/common";
+import { BASE_URL, type Quiz } from "../types/common";
 
-interface Quiz {
-  id: number;
-  title: string;
-  start_time: string;
-  end_time: string;
-  num_questions: number;
-  duration_minutes: number;
-}
+// interface Quiz {
+//   id: number;
+//   title: string;
+//   start_time: string;
+//   end_time: string;
+//   num_questions: number;
+//   duration_minutes: number;
+//   status: string;
+// }
 
 const TrainerDashboard = () => {
   const [showModal, setShowModal] = useState(false);
@@ -110,7 +111,7 @@ const TrainerDashboard = () => {
             <p>No quizzes found. Click “Create Quiz” to add one.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex flex-col gap-4 w-full max-w-4xl mx-auto">
             {quizzes.map((quiz) => (
               <QuizCard key={quiz.id} {...quiz} />
             ))}
