@@ -6,17 +6,7 @@ import QuizCard from "../components/QuizCard";
 import Navbar from "../components/Navbar";
 import { BASE_URL, type Quiz } from "../types/common";
 
-// interface Quiz {
-//   id: number;
-//   title: string;
-//   start_time: string;
-//   end_time: string;
-//   num_questions: number;
-//   duration_minutes: number;
-//   status: string;
-// }
-
-const TrainerDashboard = () => {
+const TrainerDashboard: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

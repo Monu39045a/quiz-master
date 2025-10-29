@@ -4,6 +4,8 @@ import Register from "../pages/Register";
 import ProtectedRoutes from "./ProtectedRoutes";
 import TrainerDashboard from "../pages/TrainerDashboard";
 import ParticipantDashboard from "../pages/ParticipantDashboard";
+import ResultsPage from "../pages/Results";
+import QuizPage from "../pages/QuizPage";
 
 const AppRoutes = () => {
   return (
@@ -30,6 +32,24 @@ const AppRoutes = () => {
           element={
             <ProtectedRoutes allowedRoles={["participant"]}>
               <ParticipantDashboard />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/quiz/take/:quizId"
+          element={
+            <ProtectedRoutes allowedRoles={["participant"]}>
+              <QuizPage />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/quiz/:quizId/results"
+          element={
+            <ProtectedRoutes allowedRoles={["trainer"]}>
+              <ResultsPage />
             </ProtectedRoutes>
           }
         />

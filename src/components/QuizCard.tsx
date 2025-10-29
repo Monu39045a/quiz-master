@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
+import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../types/common";
+import { setQuizDetails } from "../redux/quizSlice";
 
 interface QuizCardProps {
   id: number;
@@ -24,6 +27,10 @@ const QuizCard = ({
   const [status, setStatus] = useState(initialStatus);
   const { role } = useSelector((state: RootState) => state.user);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user_id } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     const interval = setInterval(() => setCurrentTime(new Date()), 60 * 1000);
@@ -35,10 +42,9 @@ const QuizCard = ({
 
   const handleStartQuiz = async () => {
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/quiz/start/${id}`,
-        { method: "PUT" }
-      );
+      const res = await fetch(`${BASE_URL}/quiz/start/${id}`, {
+        method: "PUT",
+      });
       if (res.ok) setStatus("started");
     } catch (err) {
       console.error("Error starting quiz:", err);
@@ -47,19 +53,33 @@ const QuizCard = ({
 
   const handleEndQuiz = async () => {
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/quiz/end/${id}`,
-        { method: "PUT" }
-      );
+      const res = await fetch(`${BASE_URL}/quiz/end/${id}`, {
+        method: "PUT",
+      });
       if (res.ok) setStatus("completed");
     } catch (err) {
       console.error("Error ending quiz:", err);
     }
   };
 
+  const handleViewResults = (id: number) => {
+    const quizData = {
+      id,
+      title,
+      start_time,
+      end_time,
+      num_questions,
+      duration_minutes,
+      status,
+      trainer_id: user_id,
+    };
+    dispatch(setQuizDetails(quizData));
+    navigate(`/quiz/${id}/results`);
+  };
+
   let buttonText = "";
   let buttonColor = "";
-  let buttonAction: (() => void) | null = null;
+  let buttonAction: (() => Promise<void>) | null = null;
   const now = currentTime.getTime();
 
   if (status === "completed" || now >= endTime.getTime()) {
@@ -99,7 +119,10 @@ const QuizCard = ({
 
       <div className="flex items-center gap-3">
         {(status === "completed" || now >= endTime.getTime()) && (
-          <button className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition">
+          <button
+            onClick={() => handleViewResults(id)}
+            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition"
+          >
             View Results
           </button>
         )}
